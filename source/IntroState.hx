@@ -10,7 +10,7 @@ import flixel.util.FlxMath;
 /**
  * A FlxState which can be used for the game's menu.
  */
-class MenuState extends FlxState
+class IntroState extends FlxState
 {
 	/**
 	 * Function that is called up when to state is created to set it up.
@@ -18,7 +18,7 @@ class MenuState extends FlxState
 	override public function create():Void
 	{
 		super.create();
-		add(new FlxText(0, 0, 100, "Menu"));
+		add(new FlxText(0, 0, 100, "Intro"));
 		FlxG.mouse.visible = false;
 	}
 
@@ -37,6 +37,9 @@ class MenuState extends FlxState
 	override public function update():Void
 	{
 		super.update();
-		FlxG.switchState(new PlayState());
+		if (FlxG.keys.justPressed.SPACE)
+		{
+			FlxG.switchState(new MenuState());
+		}
 	}
 }
