@@ -74,7 +74,7 @@ class IntroState extends FlxState
 	override public function update():Void
 	{
 		super.update();
-		if (FlxG.keys.justPressed.SPACE)
+		if (FlxG.keys.justPressed.ANY)
 		{
 			switchState();
 		}
