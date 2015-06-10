@@ -18,6 +18,7 @@ class MenuState extends FlxState
 	override public function create():Void
 	{
 		super.create();
+		this.bgColor = 0x00000000;
 		add(new FlxText(0, 0, 100, "Menu"));
 		FlxG.mouse.visible = false;
 	}
