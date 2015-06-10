@@ -76,6 +76,11 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
+		for (layer in collidableTileLayers)
+		{
+			//FlxG.overlap(player, layer);
+			FlxG.collide(player, layer);
+		}
 	}
 
 	override public function destroy():Void
