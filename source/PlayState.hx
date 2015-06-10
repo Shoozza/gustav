@@ -60,11 +60,6 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
-		if (FlxG.keys.justPressed.ANY)
-		{
-			trace("swithcing to cut");
-			FlxG.switchState(new CutSceneState());
-		}
 	}
 
 	override public function destroy():Void

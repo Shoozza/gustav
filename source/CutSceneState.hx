@@ -84,11 +84,14 @@ class CutSceneState extends FlxState
 						_people.kill();
 						_text.text = "nonononono never - denied";
 					}
+				case 3:
+					{
+						FlxG.switchState(new PlayState());
+					}
 			}
 		}
 		if (FlxG.keys.justPressed.ANY)
 		{
-			trace("epic1");
 			_needsUpdate = true;
 			_index = _index + 1;
 		}
