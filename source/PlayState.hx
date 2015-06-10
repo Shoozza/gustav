@@ -5,9 +5,14 @@ import flixel.FlxG;
 import haxe.io.Path;
 import flixel.tile.FlxTilemap;
 import flixel.addons.editors.tiled.TiledMap;
+import flixel.FlxObject;
+import flixel.group.FlxTypedGroup;
 
 class PlayState extends FlxState
 {
+	private var player:Player;
+	private var collidableTileLayers:Array<FlxTilemap>;
+
 	override public function create():Void
 	{
 		super.create();
@@ -17,6 +22,8 @@ class PlayState extends FlxState
 		var tileSize = tiledLevel.tileWidth;
 		var mapW = tiledLevel.width;
 		var mapH = tiledLevel.height;
+
+		collidableTileLayers = new Array<FlxTilemap>();
 
 		for (layer in tiledLevel.layers)
 		{
@@ -28,6 +35,7 @@ class PlayState extends FlxState
 			var tilesheetName:String = layer.properties.get("tilesheet");
 			var tilesheetPath:String = "assets/images/" + tilesheetName;
 
+
 			var level:FlxTilemap = new FlxTilemap();
 
 			level.widthInTiles = mapW;
@@ -36,8 +44,16 @@ class PlayState extends FlxState
 			var tileGID:Int = getStartGid(tiledLevel, tilesheetName);
 
 			level.loadMap(layer.tileArray, tilesheetPath, tileSize, tileSize, FlxTilemap.OFF, tileGID);
+
+			if (layer.properties.contains("collide"))
+			{
+				collidableTileLayers.push(level);
+			}
 			add(level);
 		}
+
+		player = new Player(40, 80);
+		add(player);
 	}
 
 	function getStartGid (tiledLevel:TiledMap, tilesheetName:String):Int
