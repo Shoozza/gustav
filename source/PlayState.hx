@@ -24,6 +24,7 @@ class PlayState extends FlxState
 		var tileSize = tiledLevel.tileWidth;  // assuming same width as height
 		var mapW = tiledLevel.width;
 		var mapH = tiledLevel.height;
+		FlxG.worldBounds.set(0, 0, mapW * tileSize, mapH * tileSize);
 
 		collidableTileLayers = new Array<FlxTilemap>();
 
