@@ -13,6 +13,7 @@ import flash.system.System;
 class PlayState extends FlxState
 {
 	private var player:Player;
+	private var enemies:FlxTypedGroup<Enemy>;
 	private var collidableTileLayers:Array<FlxTilemap>;
 
 	override public function create():Void
@@ -55,6 +56,7 @@ class PlayState extends FlxState
 			add(level);
 		}
 
+		enemies = new FlxTypedGroup<Enemy>();
 		for (group in tiledLevel.objectGroups)
 		{
 			for (o in group.objects)
@@ -64,9 +66,13 @@ class PlayState extends FlxState
 					case "player_start":
 						player = new Player(o.x, o.y);
 						add(player);
+
+					case "enemy_start":
+						enemies.add(new Enemy(o.x, o.y));
 				}
 			}
 		}
+		add(enemies);
 		FlxG.camera.follow(player, FlxCamera.STYLE_TOPDOWN_TIGHT, null, 4);
 	}
 
