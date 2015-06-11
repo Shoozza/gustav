@@ -45,8 +45,7 @@ class IntroState extends FlxState
 				{
 					tween.cancel();
 					FlxTween.tween(_publisher, {alpha: 1.0}, 0.25, { type: FlxTween.ONESHOT, ease:FlxEase.quadInOut, loopDelay: 1, complete: function(tween:FlxTween) {
-							Sys.sleep(1);
-							switchState();
+							haxe.Timer.delay(switchState, 1000);
 							}});
 				}
 				}});
