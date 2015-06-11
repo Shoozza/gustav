@@ -132,7 +132,12 @@ class CutSceneState extends FlxState
 					}
 			}
 		}
-		if (FlxG.keys.justPressed.ANY)
+		if (FlxG.keys.justPressed.ESCAPE)
+		{
+			_needsUpdate = true;
+			_index = 6;
+		}
+		else if (FlxG.keys.justPressed.ANY)
 		{
 			_needsUpdate = true;
 			_index = _index + 1;
