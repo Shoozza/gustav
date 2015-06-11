@@ -7,6 +7,7 @@ import flixel.tile.FlxTilemap;
 import flixel.addons.editors.tiled.TiledMap;
 import flixel.FlxObject;
 import flixel.group.FlxTypedGroup;
+import flixel.FlxCamera;
 import flash.system.System;
 
 class PlayState extends FlxState
@@ -65,6 +66,7 @@ class PlayState extends FlxState
 				}
 			}
 		}
+		FlxG.camera.follow(player, FlxCamera.STYLE_LOCKON);
 	}
 
 	function getStartGid (tiledLevel:TiledMap, tilesheetName:String):Int
