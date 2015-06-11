@@ -67,7 +67,7 @@ class PlayState extends FlxState
 				}
 			}
 		}
-		FlxG.camera.follow(player, FlxCamera.STYLE_LOCKON);
+		FlxG.camera.follow(player, FlxCamera.STYLE_TOPDOWN_TIGHT, null, 4);
 	}
 
 	function getStartGid (tiledLevel:TiledMap, tilesheetName:String):Int
