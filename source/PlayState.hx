@@ -7,6 +7,7 @@ import flixel.tile.FlxTilemap;
 import flixel.addons.editors.tiled.TiledMap;
 import flixel.FlxObject;
 import flixel.group.FlxTypedGroup;
+import flash.system.System;
 
 class PlayState extends FlxState
 {
@@ -90,6 +91,10 @@ class PlayState extends FlxState
 		{
 			//FlxG.overlap(player, layer);
 			FlxG.collide(player, layer);
+		}
+		if (FlxG.keys.pressed.ESCAPE)
+		{
+			System.exit(0);
 		}
 	}
 
