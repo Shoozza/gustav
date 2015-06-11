@@ -7,15 +7,19 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 import flixel.tweens.FlxTween;
+import flixel.tweens.misc.VarTween;
 
 class CutSceneState extends FlxState
 {
 	private var _background:FlxSprite;
+	private var _textbox:FlxSprite;
 	private var _grandpa:FlxSprite;
 	private var _people:FlxSprite;
 	private var _index:Int;
 	private var _needsUpdate:Bool;
 	private var _text:FlxText;
+	private var _grandpaTween:VarTween;
+	private var _peopleTween:VarTween;
 
 	override public function create():Void
 	{
@@ -41,6 +45,12 @@ class CutSceneState extends FlxState
 		add(_people);
 		_people.kill();
 
+		_textbox = new FlxSprite();
+		_textbox.loadGraphic("assets/images/cutscenetextbox.png");
+		_textbox.x = 0;
+		_textbox.y = 0;
+		add(_textbox);
+
 		add(new FlxText(0, 0, 100, "Cut"));
 
 		_text = new FlxText(FlxG.width/2, FlxG.height - FlxG.height/10);
@@ -65,26 +75,56 @@ class CutSceneState extends FlxState
 			{
 				case 0:
 					{
-						_grandpa.reset(0, 0);
-						FlxTween.tween(_grandpa, { x: FlxG.width/10 }, 5.0);
-						_people.kill();
-						_text.text = "blablah";
+						_grandpa.kill();
+						_people.reset(0, 0);
+						_peopleTween = FlxTween.tween(_people, { x: -FlxG.width/10 }, 5.0);
+						_text.text = "hmm yeah ok hmm";
 					}
 				case 1:
 					{
-						_grandpa.kill();
-						_people.reset(0, 0);
-						FlxTween.tween(_people, { x: -FlxG.width/10 }, 5.0);
-						_text.text = "hmm yeah ok hmm";
+						_peopleTween.cancel();
+						_people.kill();
+						_grandpa.reset(0, 0);
+						_grandpa.x = 0;
+						_grandpaTween = FlxTween.tween(_grandpa, { x: FlxG.width/10 }, 5.0);
+						_people.kill();
+						_text.text = "blablah";
 					}
 				case 2:
 					{
-						_grandpa.reset(0, 0);
-						FlxTween.tween(_grandpa, { x: FlxG.width/10 }, 5.0);
-						_people.kill();
-						_text.text = "nonononono never - denied";
+						_grandpaTween.cancel();
+						_grandpa.kill();
+						_people.reset(0, 0);
+						_peopleTween = FlxTween.tween(_people, { x: -FlxG.width/10 }, 5.0);
+						_text.text = "hmm yeah ok hmm";
 					}
 				case 3:
+					{
+						_peopleTween.cancel();
+						_people.kill();
+						_grandpa.reset(0, 0);
+						_grandpa.x = 0;
+						_grandpaTween = FlxTween.tween(_grandpa, { x: FlxG.width/10 }, 5.0);
+						_text.text = "nonononono never - denied";
+					}
+				case 4:
+					{
+						_grandpaTween.cancel();
+						_grandpa.kill();
+						_people.reset(0, 0);
+						_peopleTween = FlxTween.tween(_people, { x: -FlxG.width/10 }, 5.0);
+						_text.text = "hmm yeah ok hmm";
+					}
+				case 5:
+					{
+						_peopleTween.cancel();
+						_people.kill();
+						_grandpa.reset(0, 0);
+						_grandpa.x = 0;
+						_grandpaTween = FlxTween.tween(_grandpa, { x: FlxG.width/10 }, 5.0);
+						_text.text = "nonononono never - denied";
+					}
+				case 6:
 					{
 						FlxG.switchState(new PlayState());
 					}
