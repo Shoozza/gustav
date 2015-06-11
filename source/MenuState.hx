@@ -78,7 +78,7 @@ class MenuState extends FlxState
 			canvas.y = menu[index].y + 10;
 			canvas.x = menu[index].x + 100;
 		}
-		if (FlxG.keys.justPressed.ENTER)
+		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE)
 		{
 			if (index == 0)
 				FlxG.switchState(new CutSceneState());
