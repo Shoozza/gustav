@@ -21,7 +21,7 @@ class PlayState extends FlxState
 
 		var tiledLevel:TiledMap = new TiledMap("assets/data/hospital.tmx");
 
-		var tileSize = tiledLevel.tileWidth;
+		var tileSize = tiledLevel.tileWidth;  // assuming same width as height
 		var mapW = tiledLevel.width;
 		var mapH = tiledLevel.height;
 
@@ -91,7 +91,6 @@ class PlayState extends FlxState
 		super.update();
 		for (layer in collidableTileLayers)
 		{
-			//FlxG.overlap(player, layer);
 			FlxG.collide(player, layer);
 		}
 		if (FlxG.keys.pressed.ESCAPE)
