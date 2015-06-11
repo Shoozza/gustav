@@ -52,8 +52,18 @@ class PlayState extends FlxState
 			add(level);
 		}
 
-		player = new Player(40, 80);
-		add(player);
+		for (group in tiledLevel.objectGroups)
+		{
+			for (o in group.objects)
+			{
+				switch (o.type.toLowerCase())
+				{
+					case "player_start":
+						player = new Player(o.x, o.y);
+						add(player);
+				}
+			}
+		}
 	}
 
 	function getStartGid (tiledLevel:TiledMap, tilesheetName:String):Int
