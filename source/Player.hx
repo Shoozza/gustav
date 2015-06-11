@@ -5,6 +5,8 @@ import flixel.FlxG;
 
 class Player extends FlxSprite
 {
+	private static inline var SPEED = 4;
+
 	public function new(X, Y)
 	{
 		super(X, Y);
@@ -22,26 +24,23 @@ class Player extends FlxSprite
 		if (FlxG.keys.pressed.LEFT) {
 			if (!FlxG.keys.pressed.SHIFT)
 				animation.play("left");
-			x += -2;
+			x -= SPEED;
 		}
 		else if (FlxG.keys.pressed.RIGHT) {
 			if (!FlxG.keys.pressed.SHIFT)
 				animation.play("right");
-			x +=  2;
+			x += SPEED;
 		}
-		else if (FlxG.keys.pressed.UP) {
+
+		if (FlxG.keys.pressed.UP) {
 			if (!FlxG.keys.pressed.SHIFT)
 				animation.play("up");
-			y += -2;
+			y -= SPEED;
 		}
 		else if (FlxG.keys.pressed.DOWN) {
 			if (!FlxG.keys.pressed.SHIFT)
 				animation.play("down");
-			y +=  2;
-		}
-		else {
-			//velocity.x =  0;
-			//velocity.y =  0;
+			y += SPEED;
 		}
 	}
 
