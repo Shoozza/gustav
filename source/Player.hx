@@ -10,7 +10,46 @@ class Player extends FlxSprite
 	private static inline var SPEED = 4;
 	private var _gamePad:FlxGamepad;
 	private var _direction:Float;
+
+	private var _left:Bool;
+	private var _right:Bool;
+	private var _up:Bool;
+	private var _down:Bool;
 	private var _strafe:Bool;
+
+	private var _padLeft:Bool;
+	private var _padRight:Bool;
+	private var _padUp:Bool;
+	private var _padDown:Bool;
+	private var _padStrafe:Bool;
+
+	private function move()
+	{
+		if (_left || _padLeft)
+		{
+			if (!(_strafe || _padStrafe))
+				animation.play("left");
+			x -= SPEED;
+		}
+		if (_right || _padRight)
+		{
+			if (!(_strafe || _padStrafe))
+				animation.play("right");
+			x += SPEED;
+		}
+		if (_up || _padUp)
+		{
+			if (!(_strafe || _padStrafe))
+				animation.play("up");
+			y -= SPEED;
+		}
+		if (_down || _padDown)
+		{
+			if (!(_strafe || _padStrafe))
+				animation.play("down");
+			y += SPEED;
+		}
+	}
 
 	public function new(X, Y)
 	{
@@ -31,71 +70,34 @@ class Player extends FlxSprite
 
 	private function gamepadControls():Void
 	{
-		_strafe = _gamePad.pressed(LogitechButtonID.SEVEN);
+		_padStrafe = _gamePad.pressed(LogitechButtonID.SEVEN);
 
 		_direction = _gamePad.getXAxis(LogitechButtonID.LEFT_ANALOGUE_X);
-		if (_direction != 0)
-		{
-			if (_direction < 0)
-			{
-				if (!_strafe)
-					animation.play("left");
-				x -= SPEED;
-			}
-			else
-			{
-				if (!_strafe)
-					animation.play("right");
-				x += SPEED;
-			}
-		}
+		_padLeft   = _direction < 0;
+		_padRight  = _direction > 0;
+
 		_direction = _gamePad.getYAxis(LogitechButtonID.LEFT_ANALOGUE_Y);
-		if (_direction != 0)
-		{
-			if (_direction < 0)
-			{
-				if (!_strafe)
-					animation.play("up");
-				y -= SPEED;
-			}
-			else
-			{
-				if (!_strafe)
-					animation.play("down");
-				y += SPEED;
-			}
-		}
+		_padUp     = _direction < 0;
+		_padDown   = _direction > 0;
 	}
 
 	override public function update():Void
 	{
 		super.update();
-		if (FlxG.keys.pressed.LEFT) {
-			if (!FlxG.keys.pressed.SHIFT)
-				animation.play("left");
-			x -= SPEED;
-		}
-		else if (FlxG.keys.pressed.RIGHT) {
-			if (!FlxG.keys.pressed.SHIFT)
-				animation.play("right");
-			x += SPEED;
-		}
+		_strafe = FlxG.keys.pressed.SHIFT;
 
-		if (FlxG.keys.pressed.UP) {
-			if (!FlxG.keys.pressed.SHIFT)
-				animation.play("up");
-			y -= SPEED;
-		}
-		else if (FlxG.keys.pressed.DOWN) {
-			if (!FlxG.keys.pressed.SHIFT)
-				animation.play("down");
-			y += SPEED;
-		}
+		_left = FlxG.keys.pressed.LEFT;
+		_right = FlxG.keys.pressed.RIGHT;
+
+		_up = FlxG.keys.pressed.UP;
+		_down = FlxG.keys.pressed.DOWN;
 
 		if (_gamePad != null)
 		{
 			gamepadControls();
 		}
+
+		move();
 	}
 
 	override public function destroy():Void
