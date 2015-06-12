@@ -64,11 +64,11 @@ class PlayState extends FlxState
 				switch (o.type.toLowerCase())
 				{
 					case "player_start":
-						player = new Player(o.x, o.y);
+						player = new Player(o.x, o.y, tileSize);
 						add(player);
 
 					case "enemy_start":
-						enemies.add(new Enemy(o.x, o.y));
+						enemies.add(new Enemy(o.x, o.y, tileSize));
 				}
 			}
 		}
