@@ -15,14 +15,24 @@ import haxe.Timer;
 class CutSceneState extends FlxState
 {
 	private var _background:FlxSprite;
+
 	private var _textbox:FlxSprite;
 	private var _grandpa:FlxSprite;
 	private var _people:FlxSprite;
+
+	private var _grandpaHip:FlxSprite;
+	private var _grandpaDeal:FlxSprite;
+
 	private var _index:Int;
 	private var _needsUpdate:Bool;
 	private var _text:FlxText;
+
 	private var _grandpaTween:VarTween;
 	private var _peopleTween:VarTween;
+
+	private var _grandpaHipTween:VarTween;
+	private var _grandpaDealTween:VarTween;
+
 	private var _startpos:Float;
 	private var _justAny:Bool;
 	private var _justEscape:Bool;
@@ -71,6 +81,20 @@ class CutSceneState extends FlxState
 		_people.y = 0;
 		add(_people);
 		_people.kill();
+
+		_grandpaHip = new FlxSprite();
+		_grandpaHip.loadGraphic("assets/images/grandpaHip.png");
+		_grandpaHip.x = _startpos;
+		_grandpaHip.y = 0;
+		add(_grandpaHip);
+		_grandpaHip.kill();
+
+		_grandpaDeal = new FlxSprite();
+		_grandpaDeal.loadGraphic("assets/images/grandpaDeal.png");
+		_grandpaDeal.x = _startpos;
+		_grandpaDeal.y = 0;
+		add(_grandpaDeal);
+		_grandpaDeal.kill();
 
 		_textbox = new FlxSprite();
 		_textbox.loadGraphic("assets/images/cutscenetextbox.png");
@@ -131,13 +155,19 @@ class CutSceneState extends FlxState
 						_people.kill();
 						_grandpa.reset(_startpos, 0);
 						_grandpa.x = _startpos;
+						_grandpaHip.reset(_startpos, 0);
+						_grandpaHip.x = _startpos;
+						_grandpaHip.y = -480;
 						_grandpaTween = FlxTween.tween(_grandpa, { x: _startpos + FlxG.width/20 }, 5.0);
+						_grandpaHipTween = FlxTween.tween(_grandpaHip, { x: _startpos + FlxG.width/20, y: 0 }, 1.0);
 						_text.text = "nope, do not want, dying double mainstream 4 me.";
 					}
 				case 4:
 					{
 						_grandpaTween.cancel();
+						_grandpaHipTween.cancel();
 						_grandpa.kill();
+						_grandpaHip.kill();
 						_people.reset(_startpos, 0);
 						_peopleTween = FlxTween.tween(_people, { x: _startpos - FlxG.width/20 }, 5.0);
 						_text.text = "what do ya meaning? you talk gibberisz";
@@ -148,7 +178,11 @@ class CutSceneState extends FlxState
 						_people.kill();
 						_grandpa.reset(_startpos, 0);
 						_grandpa.x = _startpos;
+						_grandpaDeal.reset(_startpos, 0);
+						_grandpaDeal.x = _startpos;
+						_grandpaDeal.y = -480;
 						_grandpaTween = FlxTween.tween(_grandpa, { x: _startpos + FlxG.width/20 }, 5.0);
+						_grandpaDealTween = FlxTween.tween(_grandpaDeal, { x: _startpos + FlxG.width/20, y: 0 }, 1.0);
 						_text.text = "deal with it, ill become invincible ma boi, engage!";
 					}
 				case 6:
