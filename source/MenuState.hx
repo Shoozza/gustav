@@ -21,6 +21,8 @@ class MenuState extends FlxState
 	private var menu:Array<FlxText>;
 
 	private var canvas:FlxSprite;
+	private var logo:FlxSprite;
+
 	private var index:Int;
 	private var _gamePad:FlxGamepad;
 	private var _timer:Timer;
@@ -54,12 +56,17 @@ class MenuState extends FlxState
 			}
 		};
 
+		logo = new FlxSprite();
+		logo.loadGraphic("assets/images/logo.png");
+		logo.x = (FlxG.width - logo.width) / 2;
+		add(logo);
+
 		this.bgColor = 0x00000000;
 		menu = new Array<FlxText>();
 
-		start   = new FlxText(0, FlxG.height/4, FlxG.width, "Start", 52);
-		options = new FlxText(0, FlxG.height/4*2, FlxG.width, "Options", 52);
-		exit    = new FlxText(0, FlxG.height/4*3, FlxG.width, "Exit", 52);
+		start   = new FlxText(0, FlxG.height/5*2 + FlxG.height/7, FlxG.width, "Start", 52);
+		options = new FlxText(0, FlxG.height/5*2 + FlxG.height/7*2, FlxG.width, "Options", 52);
+		exit    = new FlxText(0, FlxG.height/5*2 + FlxG.height/7*3, FlxG.width, "Exit", 52);
 		start.setFormat(null, 52, 0xffffff, "center", FlxText.BORDER_OUTLINE, 0x000000);
 		options.setFormat(null, 52, 0xffffff, "center", FlxText.BORDER_OUTLINE, 0x000000);
 		exit.setFormat(null, 52, 0xffffff, "center", FlxText.BORDER_OUTLINE, 0x000000);
@@ -83,7 +90,7 @@ class MenuState extends FlxState
 		index = 0;
 
 		canvas.y = menu[index].y + 10;
-		canvas.x = menu[index].x + 100;
+		canvas.x = menu[index].x + 200;
 
 		FlxG.mouse.visible = false;
 	}
@@ -111,13 +118,13 @@ class MenuState extends FlxState
 		{
 			index = (index + 1) % 3;
 			canvas.y = menu[index].y + 10;
-			canvas.x = menu[index].x + 100;
+			canvas.x = menu[index].x + 200;
 		}
 		if (FlxG.keys.justPressed.UP || _justUp)
 		{
 			index = (index + 2) % 3;
 			canvas.y = menu[index].y + 10;
-			canvas.x = menu[index].x + 100;
+			canvas.x = menu[index].x + 200;
 		}
 		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE ||
 			(_gamePad != null &&
