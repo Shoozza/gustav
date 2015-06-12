@@ -9,6 +9,9 @@ import flixel.util.FlxMath;
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxColor;
 import flash.system.System;
+import flixel.input.gamepad.FlxGamepad;
+import flixel.input.gamepad.LogitechButtonID;
+import haxe.Timer;
 
 class MenuState extends FlxState
 {
@@ -19,10 +22,38 @@ class MenuState extends FlxState
 
 	private var canvas:FlxSprite;
 	private var index:Int;
+	private var _gamePad:FlxGamepad;
+	private var _timer:Timer;
+	private var _oldDown:Bool;
+	private var _oldUp:Bool;
+	private var _down:Bool;
+	private var _up:Bool;
+	private var _justDown:Bool;
+	private var _justUp:Bool;
+	private var _direction:Float;
 
 	override public function create():Void
 	{
 		super.create();
+
+		_oldDown = _oldUp = _up = _down = false;
+
+		_gamePad = FlxG.gamepads.lastActive;
+
+		_timer = new haxe.Timer(100);
+		_timer.run = function()
+		{
+			if (_gamePad == null)
+			{
+				_gamePad = FlxG.gamepads.lastActive;
+			}
+
+			if (_gamePad != null)
+			{
+				_timer.stop();
+			}
+		};
+
 		this.bgColor = 0x00000000;
 		menu = new Array<FlxText>();
 
@@ -66,27 +97,53 @@ class MenuState extends FlxState
 	{
 		super.update();
 
-		if (FlxG.keys.justPressed.DOWN)
+		if (_gamePad != null)
+		{
+			_up = _gamePad.getXAxis(LogitechButtonID.LEFT_ANALOGUE_Y) < 0;
+			_justUp = !_oldUp && _up;
+			_down = _gamePad.getXAxis(LogitechButtonID.LEFT_ANALOGUE_Y) > 0;
+			_justDown = !_oldDown && _down;
+			_oldUp = _up;
+			_oldDown = _down;
+		}
+
+		if (FlxG.keys.justPressed.DOWN || _justDown)
 		{
 			index = (index + 1) % 3;
 			canvas.y = menu[index].y + 10;
 			canvas.x = menu[index].x + 100;
 		}
-		if (FlxG.keys.justPressed.UP)
+		if (FlxG.keys.justPressed.UP || _justUp)
 		{
 			index = (index + 2) % 3;
 			canvas.y = menu[index].y + 10;
 			canvas.x = menu[index].x + 100;
 		}
-		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE)
+		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE ||
+			(_gamePad != null &&
+			_gamePad.anyJustPressed([
+				LogitechButtonID.ONE,
+				LogitechButtonID.TWO,
+				LogitechButtonID.THREE,
+				LogitechButtonID.FOUR])
+			))
 		{
 			if (index == 0)
+			{
+				_timer.stop();
 				FlxG.switchState(new CutSceneState());
+			}
 			if (index == 1)
+			{
 				trace("todo");
+				_timer.stop();
 				//FlxG.switchState(new OptionsState());
+			}
 			if (index == 2)
+			{
+				_timer.stop();
 				System.exit(0);
+			}
 		}
 	}
 }

@@ -9,6 +9,9 @@ import flixel.util.FlxMath;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
+import flixel.input.gamepad.FlxGamepad;
+import flixel.input.gamepad.LogitechButtonID;
+import haxe.Timer;
 
 /**
  * A FlxState which can be used for the game's menu.
@@ -17,12 +20,34 @@ class IntroState extends FlxState
 {
 	private var _logo:FlxSprite;
 	private var _publisher:FlxSprite;
+	private var _gamePad:FlxGamepad;
+	private var _timer:Timer;
+	private var _stateEnded:Bool;
+
 	/**
 	 * Function that is called up when to state is created to set it up.
 	 */
 	override public function create():Void
 	{
 		super.create();
+		_stateEnded = false;
+
+		_gamePad = FlxG.gamepads.lastActive;
+
+		_timer = new haxe.Timer(100);
+		_timer.run = function()
+		{
+			if (_gamePad == null)
+			{
+				_gamePad = FlxG.gamepads.lastActive;
+			}
+
+			if (_gamePad != null)
+			{
+				_timer.stop();
+			}
+		};
+
 		add(new FlxText(0, 0, 100, "Intro"));
 		this.bgColor = 0xFFFFFFFF;
 		FlxG.mouse.visible = false;
@@ -62,10 +87,15 @@ class IntroState extends FlxState
 
 	private function switchState():Void
 	{
-		FlxG.camera.fade(FlxColor.BLACK, 0.25, false, function(){
-				FlxG.camera.fill(0);
-				FlxG.switchState(new MenuState());
-				});
+		if (!_stateEnded)
+		{
+			_stateEnded = true;
+			_timer.stop();
+			FlxG.camera.fade(FlxColor.BLACK, 0.25, false, function(){
+					FlxG.camera.fill(0);
+					FlxG.switchState(new MenuState());
+					});
+		}
 	}
 	/**
 	 * Function that is called once every frame.
@@ -73,7 +103,7 @@ class IntroState extends FlxState
 	override public function update():Void
 	{
 		super.update();
-		if (FlxG.keys.justPressed.ANY)
+		if (FlxG.keys.justPressed.ANY || (_gamePad != null && _gamePad.anyInput()))
 		{
 			switchState();
 		}

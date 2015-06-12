@@ -8,6 +8,9 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 import flixel.tweens.FlxTween;
 import flixel.tweens.misc.VarTween;
+import flixel.input.gamepad.FlxGamepad;
+import flixel.input.gamepad.LogitechButtonID;
+import haxe.Timer;
 
 class CutSceneState extends FlxState
 {
@@ -21,10 +24,32 @@ class CutSceneState extends FlxState
 	private var _grandpaTween:VarTween;
 	private var _peopleTween:VarTween;
 	private var _startpos:Float;
+	private var _justAny:Bool;
+	private var _justEscape:Bool;
+	private var _gamePad:FlxGamepad;
+	private var _timer:Timer;
 
 	override public function create():Void
 	{
 		super.create();
+
+		_gamePad = FlxG.gamepads.lastActive;
+		_justAny = false;
+		_justEscape = false;
+
+		_timer = new haxe.Timer(100);
+		_timer.run = function()
+		{
+			if (_gamePad == null)
+			{
+				_gamePad = FlxG.gamepads.lastActive;
+			}
+
+			if (_gamePad != null)
+			{
+				_timer.stop();
+			}
+		};
 
 		_background = new FlxSprite();
 		_background.loadGraphic("assets/images/cutscenebackground.png");
@@ -128,16 +153,34 @@ class CutSceneState extends FlxState
 					}
 				case 6:
 					{
+						_timer.stop();
 						FlxG.switchState(new PlayState());
 					}
 			}
 		}
-		if (FlxG.keys.justPressed.ESCAPE)
+		if (_gamePad != null)
+		{
+			_justAny = _gamePad.anyJustPressed([
+				LogitechButtonID.ONE,
+				LogitechButtonID.TWO,
+				LogitechButtonID.THREE,
+				LogitechButtonID.FOUR,
+				LogitechButtonID.FIVE,
+				LogitechButtonID.SIX,
+				LogitechButtonID.SEVEN,
+				LogitechButtonID.EIGHT,
+				LogitechButtonID.NINE,
+				LogitechButtonID.TEN]);
+			_justEscape = _gamePad.anyJustPressed([
+				LogitechButtonID.NINE,
+				LogitechButtonID.TEN]);
+		}
+		if (FlxG.keys.justPressed.ESCAPE || _justEscape)
 		{
 			_needsUpdate = true;
 			_index = 6;
 		}
-		else if (FlxG.keys.justPressed.ANY)
+		else if (FlxG.keys.justPressed.ANY || _justAny)
 		{
 			_needsUpdate = true;
 			_index = _index + 1;
