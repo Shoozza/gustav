@@ -4,6 +4,7 @@ import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.input.gamepad.LogitechButtonID;
+import openfl.Assets;
 
 class Player extends FlxSprite
 {
@@ -54,13 +55,51 @@ class Player extends FlxSprite
 	public function new(X, Y, H)
 	{
 		super(X, Y);
-		loadGraphic("assets/images/player.png", false, 48, 48);
+		var widthInt = 48;
+		var heightInt = 48;
+
+		var basePath:String = "assets/images/";
+		var baseXmlPath:String = "assets/data/";
+
+		var fileName:String = "player.png";
+		var xmlFileName:String = "player.xml";
+		try
+		{
+			if (Assets.exists(baseXmlPath + xmlFileName))
+			{
+				var playerXml:String = Assets.getText(baseXmlPath + xmlFileName);
+				var root:Xml = Xml.parse(playerXml).firstElement();
+
+				var imageNameStr:String = root.get('src');
+				if (imageNameStr!= null)
+				{
+					fileName = imageNameStr;
+				}
+
+				var widthStr:String = root.get('width');
+				if (widthStr != null)
+				{
+					widthInt = Std.parseInt(widthStr);
+				}
+
+				var heightStr:String = root.get('height');
+				if (heightStr != null)
+				{
+					heightInt = Std.parseInt(heightStr);
+				}
+			}
+		}
+		catch (unknown : Dynamic)
+		{
+		}
+
+		loadGraphic(basePath + fileName, false, widthInt, heightInt);
 		animation.add("up", [0]);
 		animation.add("left", [1]);
 		animation.add("down", [2]);
 		animation.add("right", [3]);
 		animation.play("up");
-		offset.set(0, 48-H);
+		offset.set(0, heightInt-H);
 		height = H;
 
 		_gamePad = FlxG.gamepads.lastActive;
