@@ -7,7 +7,7 @@ class Enemy extends FlxSprite
 {
 	private static inline var SPEED = 4;
 
-	public function new(X, Y, T)
+	public function new(X, Y, H)
 	{
 		super(X, Y);
 		loadGraphic("assets/images/player.png", false, 48, 48);
@@ -16,8 +16,8 @@ class Enemy extends FlxSprite
 		animation.add("down", [2]);
 		animation.add("right", [3]);
 		animation.play("up");
-		offset.set(0, 48-T);
-		height = T;
+		offset.set(0, 48-H);
+		height = H;
 	}
 
 	override public function update():Void
