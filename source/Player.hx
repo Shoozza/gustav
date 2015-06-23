@@ -51,7 +51,7 @@ class Player extends FlxSprite
 		}
 	}
 
-	public function new(X, Y, T)
+	public function new(X, Y, H)
 	{
 		super(X, Y);
 		loadGraphic("assets/images/player.png", false, 48, 48);
@@ -60,8 +60,8 @@ class Player extends FlxSprite
 		animation.add("down", [2]);
 		animation.add("right", [3]);
 		animation.play("up");
-		offset.set(0, 48-T);
-		height = T;
+		offset.set(0, 48-H);
+		height = H;
 
 		_gamePad = FlxG.gamepads.lastActive;
 		if (_gamePad == null)

@@ -22,10 +22,11 @@ class PlayState extends FlxState
 
 		var tiledLevel:TiledMap = new TiledMap("assets/data/hospital.tmx");
 
-		var tileSize = tiledLevel.tileWidth;  // assuming same width as height
+		var tileHeight = tiledLevel.tileHeight;
+		var tileWidth = tiledLevel.tileWidth;
 		var mapW = tiledLevel.width;
 		var mapH = tiledLevel.height;
-		FlxG.worldBounds.set(0, 0, mapW * tileSize, mapH * tileSize);
+		FlxG.worldBounds.set(0, 0, mapW * tileWidth, mapH * tileHeight);
 
 		collidableTileLayers = new Array<FlxTilemap>();
 
@@ -47,7 +48,7 @@ class PlayState extends FlxState
 
 			var tileGID:Int = getStartGid(tiledLevel, tilesheetName);
 
-			level.loadMap(layer.tileArray, tilesheetPath, tileSize, tileSize, FlxTilemap.OFF, tileGID);
+			level.loadMap(layer.tileArray, tilesheetPath, tileWidth, tileHeight, FlxTilemap.OFF, tileGID);
 
 			if (layer.properties.contains("collide"))
 			{
@@ -64,11 +65,11 @@ class PlayState extends FlxState
 				switch (o.type.toLowerCase())
 				{
 					case "player_start":
-						player = new Player(o.x, o.y, tileSize);
+						player = new Player(o.x, o.y, tileHeight);
 						add(player);
 
 					case "enemy_start":
-						enemies.add(new Enemy(o.x, o.y, tileSize));
+						enemies.add(new Enemy(o.x, o.y, tileHeight));
 				}
 			}
 		}
